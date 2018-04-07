@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -91,6 +92,22 @@ public class MainActivity extends Activity {
 
             }
         });
+        Button scooter = (Button) findViewById(R.id.button2);
+        scooter.setOnClickListener(new View.OnClickListener()
+        {
+            MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.scooter_fish);
+            public void onClick(View v)
+            {
+
+
+                if(mp.isPlaying()){
+                    mp.pause();
+                } else {
+                    mp.start();
+                }
+
+            }
+        });
 
         ctx = this;
         mSensorService = new SensorService(getCtx());
@@ -144,6 +161,21 @@ public class MainActivity extends Activity {
             public void onClick(View v)
             {
                 normalMode();
+            }
+        });
+
+        Button scooter = (Button) findViewById(R.id.button2);
+        scooter.setOnClickListener(new View.OnClickListener()
+        {
+            MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.scooter_fish);
+            public void onClick(View v)
+            {
+                if(mp.isPlaying()){
+                    mp.pause();
+                } else {
+                    mp.start();
+                }
+
             }
         });
 
