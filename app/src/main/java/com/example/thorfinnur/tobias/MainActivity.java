@@ -163,6 +163,18 @@ public class MainActivity extends Activity {
                 normalMode();
             }
         });
+        
+
+        Button facts = (Button) findViewById(R.id.toggleButton);
+        facts.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                TextView myAwesomeTextView = (TextView)findViewById(R.id.textView6);
+
+                myAwesomeTextView.setText("Ég er 100% prótín");
+            }
+        });
 
         Button scooter = (Button) findViewById(R.id.button2);
         scooter.setOnClickListener(new View.OnClickListener()
@@ -175,7 +187,6 @@ public class MainActivity extends Activity {
                 } else {
                     mp.start();
                 }
-
             }
         });
 
