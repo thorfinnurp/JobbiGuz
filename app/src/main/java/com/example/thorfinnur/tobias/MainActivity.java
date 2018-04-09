@@ -174,32 +174,51 @@ public class MainActivity extends Activity {
 
                 int likur = 0;
                 double hiti = 0;
-                weather_temperature = weather_temperature.replaceAll("[^0-9]","");
+                Log.d("Hiti","value" + weather_temperature);
+                weather_temperature = weather_temperature.replaceAll("[^0-9.]","");
                 hiti = Double.parseDouble(weather_temperature);
 
-                if(hiti > 20){
-                    likur = 100;
+                Log.d("Hiti","value " + hiti);
+
+
+                if(hiti > 22){
+                    likur = 99;
+                }
+                else if(hiti > 20){
+                    likur = 92;
                 }
                 else if(hiti > 18){
-                    likur = 85;
+                    likur = 83;
+                }
+                else if(hiti > 16){
+                    likur = 72;
                 }
                 else if(hiti > 15){
                     likur = 65;
                 }
+                else if(hiti > 14){
+                    likur = 54;
+                }
                 else if(hiti > 13){
-                    likur = 40;
+                    likur = 37;
                 }
                 else if(hiti > 10){
-                    likur = 25;
+                    likur = 24;
+                }
+                else if(hiti > 8){
+                    likur = 19;
                 }
                 else if(hiti > 7){
-                    likur = 10;
+                    likur = 13;
+                }
+                else if(hiti > 6){
+                    likur = 9;
                 }
                 else if(hiti > 5){
                     likur = 7;
                 }
                 else{
-                    likur = 5;
+                    likur = 3;
                 }
                 textOut1 = (TextView)findViewById(R.id.textView7);
                 textOut1.setText("Líkurnar á því að\nJobbi sé að tana: \n " + likur +"%");
