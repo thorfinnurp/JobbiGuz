@@ -176,7 +176,6 @@ public class MainActivity extends Activity {
                 double hiti = 0;
                 weather_temperature = weather_temperature.replaceAll("[^0-9]","");
                 hiti = Double.parseDouble(weather_temperature);
-                hiti = 11;
 
                 if(hiti > 20){
                     likur = 100;
@@ -309,7 +308,7 @@ public class MainActivity extends Activity {
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
         listView.setAdapter(adapter);
-        
+
         ctx = this;
         mSensorService = new SensorService(getCtx());
         mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
