@@ -67,26 +67,18 @@ public class SensorService extends Service {
         timer.schedule(timerTask, 150000, 150000); //
     }
 
-    /**
-     * it sets the timer to print the counter every x seconds
-     */
     public void initializeTimerTask() {
 
         timerTask = new TimerTask() {
 
             public void run() {
                 HttpGetRequest httpGetRequest = new HttpGetRequest();
-                Log.i("in timer", "in timer ++++  "+ (counter++));
-                Log.d("TimerTask", "slinur");
                 httpGetRequest.execute("arr");
 
             }
         };
     }
 
-    /**
-     * not needed
-     */
     public void stoptimertask() {
         //stop the timer, if it's not already null
         if (timer != null) {
@@ -148,7 +140,7 @@ public class SensorService extends Service {
                 result = null;
             }
 
-            Log.d("Result", result);
+          //  Log.d("Result", result);
             return result;
         }
 
@@ -170,9 +162,6 @@ public class SensorService extends Service {
             ehv = ehv.replaceAll(" ", "");
             ehv = ehv.trim();
             int posts = Integer.parseInt(ehv);
-
-
-
 
             SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
             int myIntValue = spa.getInt("your_int_key", -1);

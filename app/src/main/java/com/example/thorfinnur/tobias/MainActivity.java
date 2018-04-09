@@ -22,17 +22,24 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.app.ListActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import org.jsoup.Jsoup;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 
 
 public class MainActivity extends Activity {
@@ -43,33 +50,42 @@ public class MainActivity extends Activity {
     public Context getCtx() {
         return ctx;
     }
+    public static final String REQUEST_METHOD = "GET";
+    public static final int READ_TIMEOUT = 15000;
+    public static final int CONNECTION_TIMEOUT = 15000;
+
+    ListView listView;
+
+    public double berAdOfan;
 
     TextView textOut1, textOut2, textOut3;
     public static final String EXTRA_MESSAGE = "com.example.thorfinnur.tobias";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         normalMode();
     }
 
     public void normalMode(){
 
         setContentView(R.layout.activity_main);
+
+
+        weather();
+
         Log.d("Hello","Hello2");
         HttpGetRequest httpGetRequest = new HttpGetRequest();
         String arr = "Hellop";
         httpGetRequest.execute(arr);
-//        httpGetRequest.onPostExecute("aarrr");
+
+
         textOut3 = (TextView)findViewById(R.id.textView4);
         textOut2 = (TextView)findViewById(R.id.textView3);
         //Get the Intent that started this activity and extract the string
         textOut3.setText("SetText1");
         textOut2.setText("SetText2");
-        //  startService(new Intent(this, NotificationService.class));
 
         Button button = (Button) findViewById(R.id.button);
-
         button.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -82,6 +98,17 @@ public class MainActivity extends Activity {
 
             }
         });
+
+        Button comment = (Button) findViewById(R.id.button3);
+        comment.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                commentMode();
+
+            }
+        });
+
         Button radio = (Button) findViewById(R.id.toggleButton);
 
         radio.setOnClickListener(new View.OnClickListener()
@@ -132,7 +159,60 @@ public class MainActivity extends Activity {
 
         }
 
+
+
     }
+    public int weather(){
+
+
+
+        Function.placeIdTask asyncTask =new Function.placeIdTask(new Function.AsyncResponse() {
+            public void processFinish(String weather_city, String weather_description,
+                                      String weather_temperature, String weather_humidity,
+                                      String weather_pressure, String weather_updatedOn,
+                                      String weather_iconText, String sun_rise) {
+
+                int likur = 0;
+                double hiti = 0;
+                weather_temperature = weather_temperature.replaceAll("[^0-9]","");
+                hiti = Double.parseDouble(weather_temperature);
+                hiti = 11;
+
+                if(hiti > 20){
+                    likur = 100;
+                }
+                else if(hiti > 18){
+                    likur = 85;
+                }
+                else if(hiti > 15){
+                    likur = 65;
+                }
+                else if(hiti > 13){
+                    likur = 40;
+                }
+                else if(hiti > 10){
+                    likur = 25;
+                }
+                else if(hiti > 7){
+                    likur = 10;
+                }
+                else if(hiti > 5){
+                    likur = 7;
+                }
+                else{
+                    likur = 5;
+                }
+                textOut1 = (TextView)findViewById(R.id.textView7);
+                textOut1.setText("Líkurnar á því að\nJobbi sé að tana: \n " + likur +"%");
+
+            }
+        });
+        asyncTask.execute("64.1265", "-21.8174"); //  asyncTask.execute("Latitude", "Longitude")
+
+
+        return 0;
+    }
+
 
     public void flexMode(){
 
@@ -144,6 +224,7 @@ public class MainActivity extends Activity {
         textOut2 = (TextView)findViewById(R.id.textView3);
         textOut3.setText("SetText1");
         textOut2.setText("SetText2");
+        weather();
 
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener()
@@ -163,18 +244,7 @@ public class MainActivity extends Activity {
                 normalMode();
             }
         });
-        
 
-        Button facts = (Button) findViewById(R.id.toggleButton);
-        facts.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                TextView myAwesomeTextView = (TextView)findViewById(R.id.textView6);
-
-                myAwesomeTextView.setText("Ég er 100% prótín");
-            }
-        });
 
         Button scooter = (Button) findViewById(R.id.button2);
         scooter.setOnClickListener(new View.OnClickListener()
@@ -190,6 +260,16 @@ public class MainActivity extends Activity {
             }
         });
 
+        Button comment = (Button) findViewById(R.id.button3);
+        comment.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                commentMode();
+
+            }
+        });
+
         ctx = this;
         mSensorService = new SensorService(getCtx());
         mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
@@ -198,7 +278,46 @@ public class MainActivity extends Activity {
         }
 
     }
+    public void commentMode(){
 
+        setContentView(R.layout.comment);
+        HttpGetRequest httpGetRequest = new HttpGetRequest();
+        String arr = "Hellop";
+
+        Button comment = (Button) findViewById(R.id.button3);
+        comment.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                normalMode();
+
+            }
+        });
+
+        listView = (ListView) findViewById(R.id.list);
+
+        String values [] = {"þykki!", "Vövðingi", "meistari", "Sæti ;)",
+                "Hvað ertu að maxa í bekk?", "Þetta fæst ekki í bónus",
+                "Hvað ertu að gefa þessum byssum?", "Netti[Sólgleraugna emoji]",
+                "Yoked[thumbs up emoji]", "Hrikalegur","WoW","Þéttur!",
+                "Flottur!", "Sæll og massaður!", "BoBa.... BOMBA!",
+                " 6 stykki af [Krepptum bicep emoji]","Beast", "BeastMode",
+                "Hot!","Dem", "Slæmur dagur fyrir JobbaGux haters",
+                "[hjörtu í augunum emoji]"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
+        listView.setAdapter(adapter);
+        
+        ctx = this;
+        mSensorService = new SensorService(getCtx());
+        mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
+        if (!isMyServiceRunning(mSensorService.getClass())) {
+            startService(mServiceIntent);
+        }
+
+    }
 
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -275,11 +394,6 @@ public class MainActivity extends Activity {
             super.onPostExecute(result);
 
             org.jsoup.nodes.Document doc =  Jsoup.parse(result);
-            //org.jsoup.nodes.Element div = doc.getElementById("meta");
-
-           // String attr = div.attr("content");
-
-
             org.jsoup.nodes.Element meta = doc.select("meta").get(16);
 
             String ehv = meta.attr("content");
@@ -294,11 +408,6 @@ public class MainActivity extends Activity {
             ehv = ehv.split(" J")[0];
             String ehv2 = "Jón Gunnar Björnsson(@jobbiguz)";
 
-           // String linkHref = link.attr("href");
-
-            //textOut3 = (TextView) textOut3.findViewById(R.id.textView3);
-            // textView.setText("Whutt");
-
             textOut3.setText(ehv);
             textOut2.setText(ehv2);
 
@@ -306,4 +415,5 @@ public class MainActivity extends Activity {
         }
 
     }
+
 }
