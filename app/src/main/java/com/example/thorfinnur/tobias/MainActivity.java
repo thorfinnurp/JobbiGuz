@@ -2,10 +2,6 @@ package com.example.thorfinnur.tobias;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,8 +9,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,15 +16,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.app.ListActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import org.jsoup.Jsoup;
 
@@ -174,13 +161,11 @@ public class MainActivity extends Activity {
 
                 int likur = 0;
                 double hiti = 0;
+
                 Log.d("Hiti","value" + weather_temperature);
                 weather_temperature = weather_temperature.replaceAll("[^0-9.]","");
                 hiti = Double.parseDouble(weather_temperature);
-
                 Log.d("Hiti","value " + hiti);
-
-
                 if(hiti > 22){
                     likur = 99;
                 }
@@ -188,37 +173,46 @@ public class MainActivity extends Activity {
                     likur = 92;
                 }
                 else if(hiti > 18){
-                    likur = 83;
+                    likur = 73;
                 }
                 else if(hiti > 16){
-                    likur = 72;
+                    likur = 62;
                 }
                 else if(hiti > 15){
-                    likur = 65;
+                    likur = 55;
                 }
                 else if(hiti > 14){
-                    likur = 54;
+                    likur = 45;
                 }
                 else if(hiti > 13){
-                    likur = 37;
+                    likur = 31;
+                }
+                else if(hiti > 12){
+                    likur = 26;
+                }
+                else if(hiti > 11){
+                    likur = 23;
                 }
                 else if(hiti > 10){
-                    likur = 24;
-                }
-                else if(hiti > 8){
                     likur = 19;
                 }
-                else if(hiti > 7){
+                else if(hiti > 9){
+                    likur = 16;
+                }
+                else if(hiti > 8){
                     likur = 13;
                 }
-                else if(hiti > 6){
+                else if(hiti > 7){
                     likur = 9;
                 }
-                else if(hiti > 5){
+                else if(hiti > 4){
                     likur = 7;
                 }
+                else if(hiti > 3){
+                    likur = 5;
+                }
                 else{
-                    likur = 3;
+                    likur = 2;
                 }
                 textOut1 = (TextView)findViewById(R.id.textView7);
                 textOut1.setText("Líkurnar á því að\nJobbi sé að tana: \n " + likur +"%");
