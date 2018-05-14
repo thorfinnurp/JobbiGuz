@@ -40,6 +40,77 @@
         app:layout_constraintVertical_bias="0.97" />
 
 
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="170dp"
+        android:layout_height="80dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <Button
+    android:id="@+id/submitButton"
+    android:layout_width="170dp"
+    android:layout_height="80dp"
+    android:text="Submit a new instagram account"
+    android:backgroundTint="@color/lightBlue2"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintVertical_bias="0.5"
+    />
+    <EditText
+        android:id="@+id/editTextTwitter"
+        android:layout_width="170dp"
+        android:layout_height="80dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <Button
+        android:id="@+id/submitButtonTwitter"
+        android:layout_width="170dp"
+        android:layout_height="80dp"
+        android:text="Submit a new twitter account"
+        android:backgroundTint="@color/lightBlue2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0.6"
+        />
+
+
+    <Button
+        android:id="@+id/username"
+        android:layout_width="170dp"
+        android:layout_height="80dp"
+        android:text="username Listi"
+        android:backgroundTint="@color/lightBlue2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0.4"
+
+        />
+
     <Button
         android:id="@+id/button"
         android:layout_width="110dp"
@@ -57,15 +128,15 @@
         android:id="@+id/toggleButton"
         android:layout_width="110dp"
         android:layout_height="67dp"
-        android:text="Flex"
-        android:checked="false"
         android:backgroundTint="@color/lightBlue"
+        android:checked="false"
         android:shadowColor="@color/colorPrimaryDark"
+        android:text="Flex"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.667"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.667"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView

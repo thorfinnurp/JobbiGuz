@@ -4,11 +4,13 @@ package com.example.thorfinnur.tobias;
  * Created by Thorfinnur on 06/04/18.
  */
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.IBinder;
@@ -87,6 +89,12 @@ public class NotificationService extends Service {
     }
 
     private void showNotification() {
+
+        SharedPreferences spa = getSharedPreferences("lastPost", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = spa.edit();
+        String value = spa.getString("account", "");
+
+
         // In this sample, we'll use the same text for the ticker and the expanded notification
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
@@ -96,10 +104,10 @@ public class NotificationService extends Service {
         Notification notification = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.jobbi_logo)
                 .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.jobbi_logo))
-                .setTicker("Ný Jobba mynd á insta!")  // the status text
+                .setTicker("Ný " + value +"mynd á insta!")  // the status text
                 .setWhen(System.currentTimeMillis())  // the time stamp
-                .setContentTitle("Ný Jobba mynd á insta!")  // the label of the entry
-                .setContentText("Á ekki að smella læki á kallinn? :)")  // the contents of the entry
+                .setContentTitle("Ný " + value + " mynd á insta!")  // the label of the entry
+                .setContentText("Á ekki að smella læki? :)")  // the contents of the entry
                 .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
                 .build();
 

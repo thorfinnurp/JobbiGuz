@@ -14,10 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 
@@ -34,6 +36,7 @@ public class MainActivity extends Activity {
     Intent mServiceIntent;
     private SensorService mSensorService;
     Context ctx;
+    EditText eText;
     public Context getCtx() {
         return ctx;
     }
@@ -42,8 +45,6 @@ public class MainActivity extends Activity {
     public static final int CONNECTION_TIMEOUT = 15000;
 
     ListView listView;
-
-    public double berAdOfan;
 
     TextView textOut1, textOut2, textOut3;
     public static final String EXTRA_MESSAGE = "com.example.thorfinnur.tobias";
@@ -77,8 +78,7 @@ public class MainActivity extends Activity {
         {
             public void onClick(View v)
             {
-
-
+                //opnar instagram accountinn hans jobba
                 Uri uri = Uri.parse("https://www.instagram.com/jobbiguz/"); // missing 'http://' will cause crashed
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
@@ -91,7 +91,19 @@ public class MainActivity extends Activity {
         {
             public void onClick(View v)
             {
+                //Opnar siduna med commentunum
                 commentMode();
+
+            }
+        });
+
+        Button username = (Button) findViewById(R.id.username);
+        username.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                //opnar lista af usernames
+                usernameMode();
 
             }
         });
@@ -112,16 +124,16 @@ public class MainActivity extends Activity {
             MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.scooter_fish);
             public void onClick(View v)
             {
-
-
+                //spilar scooter
                 if(mp.isPlaying()){
                     mp.pause();
                 } else {
                     mp.start();
                 }
-
             }
         });
+
+
 
         ctx = this;
         mSensorService = new SensorService(getCtx());
@@ -130,10 +142,13 @@ public class MainActivity extends Activity {
             startService(mServiceIntent);
         }
 
+
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("firstTime", false)) {
             // <---- run your one time code here
 
+            //thessi kodi er bara keyrdur i fyrsta skipti sem appid er notad
             SharedPreferences sp = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putInt("your_int_key", 95);
@@ -144,9 +159,47 @@ public class MainActivity extends Activity {
             editor2.putBoolean("firstTime", true);
             editor2.commit();
 
+            SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor1 = spa.edit();
+            String value = spa.getString("account", "");
+            String appendedValue = "";
+            editor1.putString("account", appendedValue).commit();
+
+
+
         }
 
+        Button submit = (Button) findViewById(R.id.submitButton);
+        eText = (EditText) findViewById(R.id.editText);
 
+        submit.setOnClickListener(new View.OnClickListener()
+        {
+
+            public void onClick(View v)
+            {
+                //baetir vid nafni a username instagram listann
+
+                String str = eText.getText().toString();
+                Toast msg = Toast.makeText(getBaseContext(),"added to list: " + str,Toast.LENGTH_LONG);
+                msg.show();
+
+                SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = spa.edit();
+                String value = spa.getString("account", "");
+                String appendedValue = value + str +" ";
+                editor.putString("account", appendedValue).commit();
+
+
+                String value1 = spa.getString("account", "");
+                Log.d("FLOTTURLISTI!", value1);
+                eText.getText().clear();
+
+
+
+
+
+            }
+        });
 
     }
     public int weather(){
@@ -227,7 +280,7 @@ public class MainActivity extends Activity {
 
 
     public void flexMode(){
-
+        //Jobba Flex mode
         setContentView(R.layout.activity_main2);
         HttpGetRequest httpGetRequest = new HttpGetRequest();
         String arr = "Hellop";
@@ -331,6 +384,62 @@ public class MainActivity extends Activity {
 
     }
 
+    public void usernameMode(){
+        //saekir lista af usernames og hendir i view
+        setContentView(R.layout.listofusers);
+        HttpGetRequest httpGetRequest = new HttpGetRequest();
+        String arr = "Hellop";
+
+        Button comment = (Button) findViewById(R.id.button3);
+        comment.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                normalMode();
+            }
+        });
+
+        listView = (ListView) findViewById(R.id.list);
+
+        SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = spa.edit();
+
+        String value = spa.getString("account", "");
+        String values[] = value.split(" ");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
+        listView.setAdapter(adapter);
+
+        ctx = this;
+        mSensorService = new SensorService(getCtx());
+        mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
+        if (!isMyServiceRunning(mSensorService.getClass())) {
+            startService(mServiceIntent);
+        }
+
+        Button hreinsa = (Button) findViewById(R.id.submitButton3);
+        hreinsa.setOnClickListener(new View.OnClickListener()
+        {
+
+            public void onClick(View v)
+            {
+                String str = eText.getText().toString();
+
+                SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = spa.edit();
+                String value = spa.getString("account", "");
+                String appendedValue = "";
+                editor.putString("account", appendedValue).commit();
+
+                String value1 = spa.getString("account", "");
+                Log.d("Hreinsaður listi!", value1);
+                usernameMode();
+            }
+        });
+
+    }
+
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -361,9 +470,12 @@ public class MainActivity extends Activity {
 
         @Override
         protected String doInBackground(String... params){
+
+            //saekir follower count og fleira fra jobba
             String stringUrl = params[0];
             String result;
             String inputLine;
+
             try {
                 //Create a URL object holding our url
                 URL myUrl = new URL("https://www.instagram.com/jobbiguz/");
@@ -404,12 +516,11 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(String result){
             super.onPostExecute(result);
-
+            //hreinsar html strenginn fra jobba
             org.jsoup.nodes.Document doc =  Jsoup.parse(result);
             org.jsoup.nodes.Element meta = doc.select("meta").get(16);
 
             String ehv = meta.attr("content");
-
             Log.d("Followers1",ehv);
             //Element meta = doc.select("a").first();
 
@@ -417,10 +528,14 @@ public class MainActivity extends Activity {
             ehv = ehv.replace("-","");
 
             ehv = ehv.replace(",","\n");
-            ehv = ehv.split(" J")[0];
-            String ehv2 = "Jón Gunnar Björnsson(@jobbiguz)";
+            Log.d("Followers2", ehv);
+            String ehv1 = ehv.split("from ")[0];
 
-            textOut3.setText(ehv);
+            String ehv2 = ehv.split("from ")[1];
+            Log.d("Followers2", ehv);
+           // String ehv2 = "Jón Gunnar Björnsson(@jobbiguz)";
+
+            textOut3.setText(ehv1);
             textOut2.setText(ehv2);
 
             super.onPostExecute(result);
