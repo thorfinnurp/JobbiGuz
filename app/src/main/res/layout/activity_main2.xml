@@ -42,7 +42,7 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/opnaInstaButton"
         android:layout_width="110dp"
         android:layout_height="67dp"
         android:text="opna insta"
@@ -55,7 +55,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/toggleButton"
+        android:id="@+id/normalModeButton"
         android:layout_width="110dp"
         android:layout_height="67dp"
         android:text="no Flex"
@@ -84,7 +84,7 @@
         app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintVertical_bias="0.97"/>
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/scooterButton"
         android:layout_width="110dp"
         android:layout_height="67dp"
         android:text="Scooter"
@@ -98,7 +98,7 @@
 
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/commentModeButton"
         android:layout_width="110dp"
         android:layout_height="67dp"
         android:text="Hugmyndir af \n commentum"

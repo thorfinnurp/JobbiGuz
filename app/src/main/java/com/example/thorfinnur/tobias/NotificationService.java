@@ -92,7 +92,7 @@ public class NotificationService extends Service {
 
         SharedPreferences spa = getSharedPreferences("lastPost", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = spa.edit();
-        String value = spa.getString("account", "");
+        String name = spa.getString("lastPost", "");
 
 
         // In this sample, we'll use the same text for the ticker and the expanded notification
@@ -104,10 +104,10 @@ public class NotificationService extends Service {
         Notification notification = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.jobbi_logo)
                 .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.jobbi_logo))
-                .setTicker("Ný " + value +"mynd á insta!")  // the status text
+                .setTicker("Ný " + name +"mynd á insta!")  // the status text
                 .setWhen(System.currentTimeMillis())  // the time stamp
-                .setContentTitle("Ný " + value + " mynd á insta!")  // the label of the entry
-                .setContentText("Á ekki að smella læki? :)")  // the contents of the entry
+                .setContentTitle("Ný " + name + " mynd á insta!")  // the label of the entry
+                .setContentText("Á ekki að smella læki á " + name + "? :)")  // the contents of the entry
                 .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
                 .build();
 

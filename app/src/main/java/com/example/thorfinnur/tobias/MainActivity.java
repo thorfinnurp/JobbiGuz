@@ -12,10 +12,8 @@ import android.preference.PreferenceManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -40,13 +38,10 @@ public class MainActivity extends Activity {
     public Context getCtx() {
         return ctx;
     }
-    public static final String REQUEST_METHOD = "GET";
-    public static final int READ_TIMEOUT = 15000;
-    public static final int CONNECTION_TIMEOUT = 15000;
 
     ListView listView;
+    TextView jobbiTana, nameJobbi, followerCountJobbi;
 
-    TextView textOut1, textOut2, textOut3;
     public static final String EXTRA_MESSAGE = "com.example.thorfinnur.tobias";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,33 +55,31 @@ public class MainActivity extends Activity {
 
 
         weather();
-
-        Log.d("Hello","Hello2");
         HttpGetRequest httpGetRequest = new HttpGetRequest();
         String arr = "Hellop";
         httpGetRequest.execute(arr);
 
 
-        textOut3 = (TextView)findViewById(R.id.textView4);
-        textOut2 = (TextView)findViewById(R.id.textView3);
+        followerCountJobbi = (TextView)findViewById(R.id.textView4);
+        nameJobbi = (TextView)findViewById(R.id.textView3);
         //Get the Intent that started this activity and extract the string
-        textOut3.setText("SetText1");
-        textOut2.setText("SetText2");
+        followerCountJobbi.setText("SetText1");
+        nameJobbi.setText("SetText2");
 
-        Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener()
+        Button opnaInsta = (Button) findViewById(R.id.opnaInstaButton);
+        opnaInsta.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
                 //opnar instagram accountinn hans jobba
-                Uri uri = Uri.parse("https://www.instagram.com/jobbiguz/"); // missing 'http://' will cause crashed
+                Uri uri = Uri.parse("https://www.instagram.com/jobbiguz/");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
 
             }
         });
 
-        Button comment = (Button) findViewById(R.id.button3);
+        Button comment = (Button) findViewById(R.id.commentModeButton);
         comment.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -97,7 +90,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button username = (Button) findViewById(R.id.username);
+        Button username = (Button) findViewById(R.id.usernameButton);
         username.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -108,7 +101,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button radio = (Button) findViewById(R.id.toggleButton);
+        Button radio = (Button) findViewById(R.id.normalModeButton);
 
         radio.setOnClickListener(new View.OnClickListener()
         {
@@ -118,7 +111,7 @@ public class MainActivity extends Activity {
 
             }
         });
-        Button scooter = (Button) findViewById(R.id.button2);
+        Button scooter = (Button) findViewById(R.id.scooterButton);
         scooter.setOnClickListener(new View.OnClickListener()
         {
             MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.scooter_fish);
@@ -182,6 +175,7 @@ public class MainActivity extends Activity {
                 String str = eText.getText().toString();
                 Toast msg = Toast.makeText(getBaseContext(),"added to list: " + str,Toast.LENGTH_LONG);
                 msg.show();
+
 
                 SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = spa.edit();
@@ -267,8 +261,8 @@ public class MainActivity extends Activity {
                 else{
                     likur = 2;
                 }
-                textOut1 = (TextView)findViewById(R.id.textView7);
-                textOut1.setText("Líkurnar á því að\nJobbi sé að tana: \n " + likur +"%");
+                jobbiTana = (TextView)findViewById(R.id.textView7);
+                jobbiTana.setText("Líkurnar á því að\nJobbi sé að tana: \n " + likur +"%");
 
             }
         });
@@ -285,13 +279,13 @@ public class MainActivity extends Activity {
         HttpGetRequest httpGetRequest = new HttpGetRequest();
         String arr = "Hellop";
         httpGetRequest.execute(arr);
-        textOut3 = (TextView)findViewById(R.id.textView4);
-        textOut2 = (TextView)findViewById(R.id.textView3);
-        textOut3.setText("SetText1");
-        textOut2.setText("SetText2");
+        followerCountJobbi = (TextView)findViewById(R.id.textView4);
+        nameJobbi = (TextView)findViewById(R.id.textView3);
+        followerCountJobbi.setText("SetText1");
+        nameJobbi.setText("SetText2");
         weather();
 
-        Button button = (Button) findViewById(R.id.button);
+        Button button = (Button) findViewById(R.id.opnaInstaButton);
         button.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -301,7 +295,7 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        Button radio = (Button) findViewById(R.id.toggleButton);
+        Button radio = (Button) findViewById(R.id.normalModeButton);
         radio.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -311,7 +305,7 @@ public class MainActivity extends Activity {
         });
 
 
-        Button scooter = (Button) findViewById(R.id.button2);
+        Button scooter = (Button) findViewById(R.id.scooterButton);
         scooter.setOnClickListener(new View.OnClickListener()
         {
             MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.scooter_fish);
@@ -325,13 +319,12 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button comment = (Button) findViewById(R.id.button3);
+        Button comment = (Button) findViewById(R.id.commentModeButton);
         comment.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
                 commentMode();
-
             }
         });
 
@@ -349,13 +342,12 @@ public class MainActivity extends Activity {
         HttpGetRequest httpGetRequest = new HttpGetRequest();
         String arr = "Hellop";
 
-        Button comment = (Button) findViewById(R.id.button3);
+        Button comment = (Button) findViewById(R.id.commentModeButton);
         comment.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
                 normalMode();
-
             }
         });
 
@@ -390,7 +382,7 @@ public class MainActivity extends Activity {
         HttpGetRequest httpGetRequest = new HttpGetRequest();
         String arr = "Hellop";
 
-        Button comment = (Button) findViewById(R.id.button3);
+        Button comment = (Button) findViewById(R.id.commentModeButton);
         comment.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -402,15 +394,32 @@ public class MainActivity extends Activity {
         listView = (ListView) findViewById(R.id.list);
 
         SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor1 = spa.edit();
+
 
         String value = spa.getString("account", "");
         String values[] = value.split(" ");
+        for(int i = 0; i < values.length; i++)
+        {
+            Log.d("NAME!!!", values[i]);
+            String name = values[i].trim();
+
+            SharedPreferences spa1 = getSharedPreferences(name, Activity.MODE_PRIVATE);
+            int myIntValue = spa1.getInt(name, 0);
+            SharedPreferences spa2 = getSharedPreferences(name + "@", Activity.MODE_PRIVATE);
+            String followers = spa2.getString(name + "@", "");
+
+            String posts = Integer.toString(myIntValue);
+
+
+            Log.d("NAME!!!", posts);
+            values[i] = values[i] + " Posts: " + posts + " Followers: " + followers;
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
         listView.setAdapter(adapter);
 
+        //Starta SensorService ef ekki i gangi
         ctx = this;
         mSensorService = new SensorService(getCtx());
         mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
@@ -418,22 +427,17 @@ public class MainActivity extends Activity {
             startService(mServiceIntent);
         }
 
-        Button hreinsa = (Button) findViewById(R.id.submitButton3);
+        Button hreinsa = (Button) findViewById(R.id.cleanUsernamesListButton);
         hreinsa.setOnClickListener(new View.OnClickListener()
         {
 
             public void onClick(View v)
             {
-                String str = eText.getText().toString();
-
+                //Hreinsar username listann
                 SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = spa.edit();
-                String value = spa.getString("account", "");
                 String appendedValue = "";
                 editor.putString("account", appendedValue).commit();
-
-                String value1 = spa.getString("account", "");
-                Log.d("Hreinsaður listi!", value1);
                 usernameMode();
             }
         });
@@ -528,15 +532,16 @@ public class MainActivity extends Activity {
             ehv = ehv.replace("-","");
 
             ehv = ehv.replace(",","\n");
-            Log.d("Followers2", ehv);
+
             String ehv1 = ehv.split("from ")[0];
 
             String ehv2 = ehv.split("from ")[1];
+            Log.d("Followers2", ehv1);
             Log.d("Followers2", ehv);
            // String ehv2 = "Jón Gunnar Björnsson(@jobbiguz)";
 
-            textOut3.setText(ehv1);
-            textOut2.setText(ehv2);
+            followerCountJobbi.setText(ehv1);
+            nameJobbi.setText(ehv2);
 
             super.onPostExecute(result);
         }

@@ -64,7 +64,7 @@ public class SensorService extends Service {
         initializeTimerTask();
 
         //schedule the timer, to wake up every 15 minutes
-        timer.schedule(timerTask, 150000, 150000); //
+        timer.schedule(timerTask, 20000, 20000); //
     }
 
     public void initializeTimerTask() {
@@ -74,6 +74,8 @@ public class SensorService extends Service {
             public void run() {
                 HttpGetRequest httpGetRequest = new HttpGetRequest();
                 httpGetRequest.execute("arr");
+                HttpGetRequestTwitter httpGetRequestTwitter = new HttpGetRequestTwitter();
+                httpGetRequestTwitter.execute("arr");
 
             }
         };
@@ -105,7 +107,7 @@ public class SensorService extends Service {
         @Override
         protected String[] doInBackground(Object... params) {
             Object stringUrl = params[0];
-            String [] result1 = new String[60];
+            String[] result1 = new String[60];
             String inputLine;
             SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = spa.edit();
@@ -113,8 +115,7 @@ public class SensorService extends Service {
             Log.d("FLOTTURLISTI!", value);
 
             String[] splited = value.split("\\s+");
-            for(int i = 0; i < splited.length; i++)
-            {
+            for (int i = 0; i < splited.length; i++) {
                 Log.d("For loop splited = ", splited[i]);
                 try {
                     //Create a URL object holding our url
@@ -152,14 +153,14 @@ public class SensorService extends Service {
                 }
             }
 
-          //  Log.d("Result", result);
+            //  Log.d("Result", result);
             return result1;
 
         }
-        public String retName(String result)
-        {
 
-            if(result != null) {
+        public String retName(String result) {
+
+            if (result != null) {
                 Log.d("ResultName: ", result);
                 org.jsoup.nodes.Document doc = Jsoup.parse(result);
                 org.jsoup.nodes.Element meta = doc.select("meta").get(16);
@@ -172,18 +173,27 @@ public class SensorService extends Service {
 
                 ehv = ehv.replace(",", "\n");
 
-                String ehv1 = ehv.split("from ")[0];
+                String followers = ehv.split("from ")[0];
 
-                String ehv2 = ehv.split("from ")[1];
-
-                ehv2 = ehv2.split("@")[1];
-                ehv2 = ehv2.replace(")", "");
+                followers = followers.split(" F")[0];
+                Log.d("Tobbi1", followers);
+                String name = ehv.split("from ")[1];
+                Log.d("Tobbi2", name);
+                name = name.split("@")[1];
+                name = name.replace(")", "");
                 // String ehv2 = "Jón Gunnar Björnsson(@jobbiguz)";
 
-                Log.d("RetName = ", ehv2);
-                return ehv2;
-            }
-            else {
+
+                //Fjoldi follwera settur i db
+                String lastPost = name + "@";
+                SharedPreferences lastUpdate = getSharedPreferences(lastPost, Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = lastUpdate.edit();
+                editor1.putString(lastPost, followers);
+                editor1.commit();
+
+                Log.d("RetName = ", name);
+                return name;
+            } else {
                 return "null";
             }
         }
@@ -193,52 +203,173 @@ public class SensorService extends Service {
 
             super.onPostExecute(result);
 
-            for(int i = 0; i < result.length; i++) {
+            for (int i = 0; i < result.length; i++) {
 
                 String name = retName(result[i]);
                 Log.d("Retname: ", name);
-                if(name != "null"){
-                org.jsoup.nodes.Document doc = Jsoup.parse(result[i]);
-                org.jsoup.nodes.Element meta = doc.select("meta").get(16);
+                if (name != "null") {
+                    org.jsoup.nodes.Document doc = Jsoup.parse(result[i]);
+                    org.jsoup.nodes.Element meta = doc.select("meta").get(16);
 
-                String ehv = meta.attr("content");
+                    String ehv = meta.attr("content");
 
-                Log.d("Followers1", ehv);
+                    Log.d("Followers1", ehv);
 
-                ehv = ehv.split("g")[1];
+                    ehv = ehv.split("g")[1];
 
-                ehv = ehv.split(" P")[0];
-                ehv = ehv.replaceAll(",", " ");
-                ehv = ehv.replaceAll(" ", "");
-                ehv = ehv.trim();
-                int posts = Integer.parseInt(ehv);
+                    ehv = ehv.split(" P")[0];
+                    ehv = ehv.replaceAll(",", " ");
+                    ehv = ehv.replaceAll(" ", "");
+                    ehv = ehv.trim();
+                    int posts = Integer.parseInt(ehv);
 
-                SharedPreferences spa = getSharedPreferences(name, Activity.MODE_PRIVATE);
-                int myIntValue = spa.getInt(name, -1);
+                    SharedPreferences spa = getSharedPreferences(name, Activity.MODE_PRIVATE);
+                    int myIntValue = spa.getInt(name, -1);
 
 
-                String tala = Integer.toString(myIntValue);
-                Log.d("Fjoldi Posta", ehv);
-                Log.d("Fjoldi Posta ur db", tala);
+                    String tala = Integer.toString(myIntValue);
+                    Log.d("Fjoldi Posta", ehv);
+                    Log.d("Fjoldi Posta ur db", tala);
 
-                if (Integer.parseInt(ehv) != Integer.parseInt(tala)) {
+                    if (Integer.parseInt(ehv) != Integer.parseInt(tala)) {
 
-                    String lastPost = "lastPost";
-                    SharedPreferences lastUpdate = getSharedPreferences(lastPost, Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor1 = lastUpdate.edit();
-                    editor1.putString(lastPost, name);
-                    editor1.commit();
+                        String lastPost = "lastPost";
+                        SharedPreferences lastUpdate = getSharedPreferences(lastPost, Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor1 = lastUpdate.edit();
+                        editor1.putString(lastPost, name);
+                        editor1.commit();
 
-                    sendNotification();
+                        sendNotification();
 
-                    SharedPreferences store = getSharedPreferences(name, Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = store.edit();
-                    editor.putInt(name, posts);
-                    editor.commit();
+                        SharedPreferences store = getSharedPreferences(name, Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = store.edit();
+                        editor.putInt(name, posts);
+                        editor.commit();
+                    }
                 }
-            }}
+            }
 
             super.onPostExecute(result);
         }
+
+
+    }
+        //@Override
+        public class HttpGetRequestTwitter extends AsyncTask<Object, Object, String[]> {
+            public static final String REQUEST_METHOD = "GET";
+            public static final int READ_TIMEOUT = 15000;
+            public static final int CONNECTION_TIMEOUT = 15000;
+            public String Follower = "Ehv";
+
+            @Nullable
+            @Override
+            protected String[] doInBackground(Object... params) {
+                Object stringUrl = params[0];
+                String [] result1 = new String[60];
+                String inputLine;
+                SharedPreferences spa = getSharedPreferences("your_prefs", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = spa.edit();
+                String value = spa.getString("account", "");
+                Log.d("FLOTTURLISTI!", value);
+
+                String[] splited = value.split("\\s+");
+                for(int i = 0; i < splited.length; i++)
+                {
+                    Log.d("For loop splited = ", splited[i]);
+                    try {
+                        //Create a URL object holding our url
+                        URL myUrl = new URL("https://www.twitter.com/" + "karlsefni");
+                        Log.d("My URL ur splited = ", splited[i]);
+                        //Create a connection
+                        HttpURLConnection connection = (HttpURLConnection)
+                                myUrl.openConnection();
+                        //Set methods and timeouts
+                        connection.setRequestMethod(REQUEST_METHOD);
+                        connection.setReadTimeout(READ_TIMEOUT);
+                        connection.setConnectTimeout(CONNECTION_TIMEOUT);
+
+                        //Connect to our url
+                        connection.connect();
+                        //Create a new InputStreamReader
+                        InputStreamReader streamReader = new
+                                InputStreamReader(connection.getInputStream());
+                        //Create a new buffered reader and String Builder
+                        BufferedReader reader = new BufferedReader(streamReader);
+                        StringBuilder stringBuilder = new StringBuilder();
+                        //Check if the line we are reading is not null
+                        while ((inputLine = reader.readLine()) != null) {
+                            stringBuilder.append(inputLine);
+                        }
+                        //Close our InputStream and Buffered reader
+                        reader.close();
+                        streamReader.close();
+                        //Set our result equal to our stringBuilder
+                        result1[i] = stringBuilder.toString();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        //result = null;
+                        result1[i] = null;
+                    }
+                }
+
+                Log.d("HalloHer1", result1[0]);
+                return result1;
+
+            }
+
+            @Override
+            protected void onPostExecute(String[] result) {
+
+                super.onPostExecute(result);
+
+
+                //String name = retName(result[i]);
+               /// Log.d("Retname: ", name);
+              //  if(name != "null"){
+
+                    Log.d("Twitter HTML: ", result[0]+"HalloHer");
+                    System.out.print("HalloHer1" + result[0]);
+                    //org.jsoup.nodes.Document doc = Jsoup.parse(result[i]);
+                    //org.jsoup.nodes.Element meta = doc.select("meta").get(16);
+
+                   // String ehv = meta.attr("content");
+
+                  //  Log.d("Followers1", ehv);
+
+                   // ehv = ehv.split("g")[1];
+
+                   // ehv = ehv.split(" P")[0];
+                  //  ehv = ehv.replaceAll(",", " ");
+                  //  ehv = ehv.replaceAll(" ", "");
+                  //  ehv = ehv.trim();
+                  //  int posts = Integer.parseInt(ehv);
+
+                   // SharedPreferences spa = getSharedPreferences(name, Activity.MODE_PRIVATE);
+                 //   int myIntValue = spa.getInt(name, -1);
+
+
+                  //  String tala = Integer.toString(myIntValue);
+                //    Log.d("Fjoldi Posta", ehv);
+                   // Log.d("Fjoldi Posta ur db", tala);
+
+                  //  if (Integer.parseInt(ehv) != Integer.parseInt(tala)) {
+
+                   //     String lastPost = "lastPost";
+                   //     SharedPreferences lastUpdate = getSharedPreferences(lastPost, Activity.MODE_PRIVATE);
+                    //    SharedPreferences.Editor editor1 = lastUpdate.edit();
+                  //      editor1.putString(lastPost, name);
+                 //       editor1.commit();
+
+                 //       sendNotification();
+
+                 //       SharedPreferences store = getSharedPreferences(name, Activity.MODE_PRIVATE);
+                 //       SharedPreferences.Editor editor = store.edit();
+                 //       editor.putInt(name, posts);
+                  //      editor.commit();
+                 //   }
+                  //  }
+
+                super.onPostExecute(result);
+            }
     }
 }
